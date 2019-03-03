@@ -15,6 +15,6 @@ db.put(doc, function(err, response) {
    if (err) {
       return console.log(err);
    } else {
-      console.log("Document created Successfully");
+      console.log("Dokumen berhasil dibuat");
    }
 });
