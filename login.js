@@ -45,9 +45,12 @@ app.post('/login', function(request, response) {
 			.then(function (result) {
 			// list of people shown here
 			if(result.docs.length>0)
-				response.send("Login Success!");
-			else
+				{
+					response.send("Login Success!");
+				}
+			else{
 				response.send("User not found!");
+			}
 		  });
 		
 	} else {
