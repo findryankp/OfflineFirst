@@ -17,6 +17,20 @@ app.use(session({
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
+db.sync(remoteDB, {
+	live: true,
+	retry: true
+  }).on('change', function (change) {
+	console.log('synced success');
+  }).on('paused', function (info) {
+	console.log('synced pause lost connection'); // replication was paused, usually because of a lost connection
+  }).on('active', function (info) {
+	console.log('synced live again');// replication was resumed
+  }).on('error', function (err) {
+	console.log('synced GAGAL');// totally unhandled error (shouldn't happen)
+  });
+
+
 app.get('/', function(request, response) {
 	response.sendFile(path.join(__dirname + '/login.html'));
 });
