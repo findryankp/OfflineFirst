@@ -6,7 +6,7 @@ var path = require('path');
 PouchDB.plugin(require('pouchdb-find'));
 
 var db = new PouchDB('my_database');
-var remoteDB = new PouchDB('http://localhost:3300/my_datadase')
+var remoteDB = new PouchDB('http://localhost:3300/my_datadase');
 
 var app = express();
 app.use(session({
@@ -29,7 +29,6 @@ db.sync(remoteDB, {
   }).on('error', function (err) {
 	console.log('synced GAGAL');// totally unhandled error (shouldn't happen)
   });
-
 
 app.get('/', function(request, response) {
 	response.sendFile(path.join(__dirname + '/login.html'));
@@ -58,6 +57,7 @@ app.post('/login', function(request, response) {
 		response.end();
 	}
 });
+
 
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {

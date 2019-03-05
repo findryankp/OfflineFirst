@@ -2,7 +2,7 @@
 var PouchDB = require('PouchDB');
 
 //Creating the database object
-var db = new PouchDB('http://localhost:5984/my_database');
+var db = new PouchDB('my_database');
 
 //Preparing the document
 doc = {
@@ -12,6 +12,20 @@ doc = {
    }
 //Inserting Document
 db.put(doc, function(err, response) {
+   if (err) {
+      return console.log(err);
+   } else {
+      console.log("Dokumen berhasil dibuat");
+   }
+});
+
+doc2 = {
+   _id : '002',
+   username: 'Princes Zulfa',
+   password: '123456'
+   }
+//Inserting Document
+db.put(doc2, function(err, response) {
    if (err) {
       return console.log(err);
    } else {
