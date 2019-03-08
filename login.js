@@ -6,7 +6,7 @@ var path = require('path');
 PouchDB.plugin(require('pouchdb-find'));
 
 var db = new PouchDB('my_database');
-var remoteDB = new PouchDB('http://localhost:3300/my_datadase');
+var remoteDB = new PouchDB('http://localhost:3300/my_datadase')
 
 var app = express();
 app.use(session({
@@ -30,6 +30,7 @@ db.sync(remoteDB, {
 	console.log('synced GAGAL');// totally unhandled error (shouldn't happen)
   });
 
+
 app.get('/', function(request, response) {
 	response.sendFile(path.join(__dirname + '/login.html'));
 });
@@ -44,12 +45,9 @@ app.post('/login', function(request, response) {
 			.then(function (result) {
 			// list of people shown here
 			if(result.docs.length>0)
-				{
-					response.send("Login Success!");
-				}
-			else{
+				response.send("Login Success!");
+			else
 				response.send("User not found!");
-			}
 		  });
 		
 	} else {
@@ -58,7 +56,6 @@ app.post('/login', function(request, response) {
 	}
 });
 
-
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
 		response.send('Welcome back, ' + request.session.username + '!');
@@ -66,6 +63,38 @@ app.get('/home', function(request, response) {
 		response.send('Please login to view this page!');
 	}
 	response.end();
+});
+
+app.get('/register', function(request, response) {
+	response.sendFile(path.join(__dirname + '/register.html'));
+});
+
+app.post('/register', function(request, response) {
+	id = Math.floor(Math.random()*(999-100+1)+100);
+	id.toString();
+	var username2 = request.body.username;
+	var password2 = request.body.password;
+
+	id += 1;
+	if (username2 && password2) {
+		//inputUsername = 
+		doc = {
+		   _id : id.toString(),
+		   username: username2.toString(),
+		   password: password2.toString()
+		   }
+		//Inserting Document
+		remoteDB.put(doc, function(err, response) {
+		   if (err) {
+		      	return console.log(err);
+		   } else {
+		    	console.log("User " + username2 + " created Successfully");
+		   }
+		});
+	} else {
+		response.send('Please enter Username and Password!');
+		response.end();
+	}
 });
 
 app.listen(3000);
